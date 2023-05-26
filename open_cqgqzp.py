@@ -26,10 +26,14 @@ if __name__ == "__main__":
         title = notice.a.text.strip()  # 提取公告标题
         link = urljoin(url, notice.a["href"])  # 提取公告超链接
         date_str = notice.span.text.strip()  # 提取公告日期
+        responseDe = requests.get(link)
+        content2 = responseDe.content
+        flag2 = BeautifulSoup(content2, "html.parser").text.__contains__("计算机")
 
         # 将日期字符串转换为日期对象，并比较日期部分
         notice_date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
-        if notice_date == today:
+        if notice_date == today and flag2:
+
             updates.append([title, link, date_str])
             found_updates = True
 
